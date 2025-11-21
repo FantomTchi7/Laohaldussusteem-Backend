@@ -7,11 +7,11 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EttevõttedController : ControllerBase
+    public class EttevõteController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public EttevõttedController(ApplicationDbContext context)
+        public EttevõteController(ApplicationDbContext context)
         {
             _context = context;
         }

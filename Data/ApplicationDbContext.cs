@@ -14,6 +14,7 @@ namespace backend.Data
         public DbSet<Ettevõte> Ettevõtted { get; set; }
         public DbSet<Koostaja> Koostajad { get; set; }
         public DbSet<Tellija> Tellijad { get; set; }
+        public DbSet<Administraator> Administraatorid { get; set; }
         public DbSet<Kasutaja> Kasutajad { get; set; }
         public DbSet<Produkt> Produktid { get; set; }
 
@@ -24,7 +25,8 @@ namespace backend.Data
             modelBuilder.Entity<Kasutaja>()
                 .HasDiscriminator(k => k.KasutajaTüüp)
                 .HasValue<Koostaja>(KasutajaTüüp.Koostaja)
-                .HasValue<Tellija>(KasutajaTüüp.Tellija);
+                .HasValue<Tellija>(KasutajaTüüp.Tellija)
+                .HasValue<Administraator>(KasutajaTüüp.Administraator);
 
             modelBuilder.Entity<Produkt>()
                 .HasDiscriminator<string>("ProduktTüüp")

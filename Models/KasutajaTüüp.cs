@@ -3,6 +3,7 @@
     public enum KasutajaTüüp
     {
         Koostaja,
-        Tellija
+        Tellija,
+        Administraator
     }
 }

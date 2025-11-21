@@ -8,11 +8,11 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ArvedController : ControllerBase
+    public class ArveController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ArvedController(ApplicationDbContext context)
+        public ArveController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -46,7 +46,7 @@ namespace backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Arve>> PostArve(Arve arve)
         {
-            ArveCalculator.CalculateTotals(arve);
+            ArveHelper.CalculateTotals(arve);
 
             _context.Arved.Add(arve);
             await _context.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace backend.Controllers
                     arve.Tooted = existingProducts;
                 }
 
-                ArveCalculator.CalculateTotals(arve);
+                ArveHelper.CalculateTotals(arve);
 
                 await _context.SaveChangesAsync();
             }

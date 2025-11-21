@@ -8,11 +8,11 @@ namespace backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TootedController : ControllerBase
+    public class ToodeController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public TootedController(ApplicationDbContext context)
+        public ToodeController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -87,7 +87,7 @@ namespace backend.Controllers
 
             if (arve != null)
             {
-                ArveCalculator.CalculateTotals(arve);
+                ArveHelper.CalculateTotals(arve);
                 _context.Entry(arve).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }

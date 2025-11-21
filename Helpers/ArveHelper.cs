@@ -2,7 +2,7 @@
 
 namespace backend.Helpers
 {
-    public static class ArveCalculator
+    public static class ArveHelper
     {
         public static void CalculateTotals(Arve arve)
         {
