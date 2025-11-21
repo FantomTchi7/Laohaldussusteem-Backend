@@ -7,13 +7,13 @@
         public DateTime Maksetähtaeg { get; set; }
 
         public int KoostajaId { get; set; }
-        public virtual Koostaja Koostaja { get; set; }
+        public virtual Koostaja? Koostaja { get; set; }
 
         public int TellijaId { get; set; }
-        public virtual Tellija Tellija { get; set; }
+        public virtual Tellija? Tellija { get; set; }
 
         public int EttevõteId { get; set; }
-        public virtual Ettevõte Ettevõte { get; set; }
+        public virtual Ettevõte? Ettevõte { get; set; }
 
         public virtual ICollection<Toode> Tooted { get; set; }
 
