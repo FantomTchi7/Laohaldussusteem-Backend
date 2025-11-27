@@ -1,1 +1,0 @@
-# Laohaldussusteem-Backend

@@ -1,0 +1,6 @@
+@Laohaldussusteem.Server_HostAddress = http://localhost:5278
+
+GET {{Laohaldussusteem.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
