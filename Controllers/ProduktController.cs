@@ -19,7 +19,9 @@ namespace backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Produkt>>> GetProduktid()
         {
-            return await _context.Produktid.ToListAsync();
+            return await _context.Produktid
+                .Where(p => !(p is Toode))
+                .ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -28,6 +30,23 @@ namespace backend.Controllers
             var produkt = await _context.Produktid.FindAsync(id);
             if (produkt == null) return NotFound();
             return produkt;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Produkt>> PostProdukt(Produkt produkt)
+        {
+            _context.Produktid.Add(produkt);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetProdukt", new { id = produkt.Id }, produkt);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProdukt(int id, Produkt produkt)
+        {
+            if (id != produkt.Id) return BadRequest();
+            _context.Entry(produkt).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

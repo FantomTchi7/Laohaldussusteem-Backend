@@ -1,6 +1,6 @@
 ﻿namespace backend.Models
 {
-    public abstract class Produkt
+    public class Produkt
     {
         public int Id { get; set; }
         public string Nimetus { get; set; }
