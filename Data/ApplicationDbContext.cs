@@ -17,6 +17,7 @@ namespace backend.Data
         public DbSet<Administraator> Administraatorid { get; set; }
         public DbSet<Kasutaja> Kasutajad { get; set; }
         public DbSet<Produkt> Produktid { get; set; }
+        public DbSet<Ladu> Laod { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +28,13 @@ namespace backend.Data
                 .HasValue<Koostaja>(KasutajaTüüp.Koostaja)
                 .HasValue<Tellija>(KasutajaTüüp.Tellija)
                 .HasValue<Administraator>(KasutajaTüüp.Administraator);
+
+            modelBuilder.Entity<Produkt>(entity => {
+                entity.HasOne(a => a.Ladu)
+                    .WithMany()
+                    .HasForeignKey(a => a.LaduId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
 
             modelBuilder.Entity<Produkt>()
                 .HasDiscriminator<string>("ProduktTüüp")
