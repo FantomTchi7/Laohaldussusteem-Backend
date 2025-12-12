@@ -55,26 +55,55 @@ namespace backend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutArve(int id, Arve arve)
+        public async Task<IActionResult> PutArve(int id, Arve incomingArve)
         {
-            if (id != arve.Id) return BadRequest();
+            if (id != incomingArve.Id) return BadRequest();
 
-            _context.Entry(arve).State = EntityState.Modified;
+            var existingArve = await _context.Arved
+                .Include(a => a.Tooted)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (existingArve == null) return NotFound();
+
+            _context.Entry(existingArve).CurrentValues.SetValues(incomingArve);
+
+            var incomingProductIds = incomingArve.Tooted.Select(t => t.Id).Where(i => i != 0).ToList();
+            
+            var productsToDelete = existingArve.Tooted
+                .Where(t => !incomingProductIds.Contains(t.Id))
+                .ToList();
+
+            foreach (var prod in productsToDelete)
+            {
+                _context.Tooted.Remove(prod);
+            }
+
+            foreach (var incomingItem in incomingArve.Tooted)
+            {
+                if (incomingItem.Id == 0)
+                {
+                    incomingItem.ArveId = existingArve.Id;
+                    existingArve.Tooted.Add(incomingItem);
+                }
+                else
+                {
+                    var existingItem = existingArve.Tooted.FirstOrDefault(t => t.Id == incomingItem.Id);
+                    if (existingItem != null)
+                    {
+                        existingItem.Nimetus = incomingItem.Nimetus;
+                        existingItem.Ühik = incomingItem.Ühik;
+                        existingItem.Kogus = incomingItem.Kogus;
+                        existingItem.Hind = incomingItem.Hind;
+                        existingItem.LaduId = incomingItem.LaduId;
+                        existingItem.BaasHind = incomingItem.BaasHind; 
+                    }
+                }
+            }
+
+            ArveHelper.CalculateTotals(existingArve);
 
             try
             {
-                if (arve.Tooted == null || !arve.Tooted.Any())
-                {
-                    var existingProducts = await _context.Tooted
-                        .Where(t => t.ArveId == id)
-                        .AsNoTracking()
-                        .ToListAsync();
-
-                    arve.Tooted = existingProducts;
-                }
-
-                ArveHelper.CalculateTotals(arve);
-
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
